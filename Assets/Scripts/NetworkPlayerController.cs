@@ -1,7 +1,5 @@
 using UnityEngine;
 using Unity.Netcode;
-using UnityEngine.EventSystems;
-
 
 public class NetworkPlayerController : NetworkBehaviour
 {
