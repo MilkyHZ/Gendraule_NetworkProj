@@ -25,7 +25,7 @@ public class MultiplayerMenu : MonoBehaviour
 
     public async void Start()
     {
-        ui = GetComponent<NetworkUI>();
+        ui = FindFirstObjectByType<NetworkUI>();
         await InitializeUnityServices();
     }
 

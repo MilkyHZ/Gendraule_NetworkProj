@@ -199,6 +199,7 @@ GameObject:
   - component: {fileID: 4533710208938890640}
   - component: {fileID: 5225667132293231398}
   - component: {fileID: 5352827938421140733}
+  - component: {fileID: -4638939283461038466}
   m_Layer: 0
   m_Name: NetworkPlayer
   m_TagString: Untagged
@@ -440,3 +441,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LocalPlayerCameraTarget
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &-4638939283461038466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5174931457872154547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3878930f2db7c6d4ea6364f02d2a354e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerColorManager
+  ShowTopMostFoldoutHeaderGroup: 1
+  playerRenderer: {fileID: 8025240936096077564}
+  playerMaterials:
+  - {fileID: 2100000, guid: 938dc2c5520ba9d4f9dc07c24383c67d, type: 2}
+  - {fileID: 2100000, guid: 5cebe378502d156438ac3e320b2cb5a5, type: 2}
+  - {fileID: 2100000, guid: 6f91d23dfcbbaff4ab5d416f15da1970, type: 2}
+  - {fileID: 2100000, guid: 1244bf23a2ac11f4bb45bf6216b32510, type: 2}
