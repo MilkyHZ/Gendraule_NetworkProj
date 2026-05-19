@@ -14,16 +14,39 @@ public class NetworkPlayerHealth : NetworkBehaviour
     public override void OnNetworkSpawn() 
     {
         base.OnNetworkSpawn();
+        if (IsServer) 
+        {
+            currentHealth.Value = maxHealth;
+        }
+        currentHealth.OnValueChanged += OnHealthChange;
     }
 
     public override void OnNetworkDespawn()
     {
-        base.OnNetworkDespawn();
+        currentHealth.OnValueChanged -= OnHealthChange;
     }
 
     private void OnHealthChange(int oldValue, int newValue) 
     {
-        maxHealth = oldValue;    
+        Debug.Log($"{gameObject.name} health change from {oldValue} -> {newValue}");
+    }
+
+    private void Respawn() 
+    {
+        currentHealth.Value = maxHealth;
+        GameObject[] spawns = GameObject.FindGameObjectsWithTag("Player");
+        int randomIndex = Random.Range(0, spawns.Length);
+        Transform selectedSpawn = spawns[randomIndex].transform;
+        CharacterController controller = GetComponent<CharacterController>();
+
+        if (controller != null) 
+            controller.enabled = false;
+        
+        transform.position = selectedSpawn.position;
+        transform.rotation = selectedSpawn.rotation;
+        
+        if (controller != null)
+            controller.enabled = true;
     }
 
     public void TakeDamage(int amount)
@@ -35,9 +58,11 @@ public class NetworkPlayerHealth : NetworkBehaviour
 
         if (currentHealth.Value <= 0) 
         {
-            currentHealth.Value = 0;
+            Respawn();
         }
     }
+    
+
     void Start()
     {
         OnNetworkSpawn();   
