@@ -4,17 +4,16 @@ using Unity.Netcode;
 public class NetworkPlayerHealth : NetworkBehaviour
 {
     [SerializeField] private int maxHealth = 100;
-    
+
     public NetworkVariable<int> currentHealth = new(
-        100, 
+        100,
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Server
     );
 
-    public override void OnNetworkSpawn() 
+    public override void OnNetworkSpawn()
     {
-        base.OnNetworkSpawn();
-        if (IsServer) 
+        if (IsServer)
         {
             currentHealth.Value = maxHealth;
         }
@@ -26,25 +25,25 @@ public class NetworkPlayerHealth : NetworkBehaviour
         currentHealth.OnValueChanged -= OnHealthChange;
     }
 
-    private void OnHealthChange(int oldValue, int newValue) 
+    private void OnHealthChange(int oldValue, int newValue)
     {
         Debug.Log($"{gameObject.name} health change from {oldValue} -> {newValue}");
     }
 
-    private void Respawn() 
+    private void Respawn()
     {
         currentHealth.Value = maxHealth;
-        GameObject[] spawns = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] spawns = GameObject.FindGameObjectsWithTag("SpawnPoint");
         int randomIndex = Random.Range(0, spawns.Length);
         Transform selectedSpawn = spawns[randomIndex].transform;
         CharacterController controller = GetComponent<CharacterController>();
 
-        if (controller != null) 
+        if (controller != null)
             controller.enabled = false;
-        
+
         transform.position = selectedSpawn.position;
         transform.rotation = selectedSpawn.rotation;
-        
+
         if (controller != null)
             controller.enabled = true;
     }
@@ -54,23 +53,11 @@ public class NetworkPlayerHealth : NetworkBehaviour
         if (!IsServer) return;
 
         currentHealth.Value -= amount;
-        currentHealth.Value = Mathf.Max(currentHealth.Value,0,maxHealth);
+        currentHealth.Value = Mathf.Clamp(currentHealth.Value, 0, maxHealth);
 
-        if (currentHealth.Value <= 0) 
+        if (currentHealth.Value <= 0)
         {
             Respawn();
         }
-    }
-    
-
-    void Start()
-    {
-        OnNetworkSpawn();   
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
